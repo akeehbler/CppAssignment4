@@ -1,6 +1,3 @@
-#include <iomanip>
-#include <iostream>
-#include <string>
 #include "Drink.h"
 
 Drink::Drink() : name(""), base_price(0.0), style(NEAT) {}
@@ -59,11 +56,45 @@ void Drink::Print() {
     cout << left << setw(22) <<  name_str << "$" << fixed << setprecision(2) << setw(4) << TotalPrice() << endl;
 }
 
+//TODO might want to use this for the drink, or maybe not
 ostream& operator<<(ostream& out, const Drink drank){
-    
+    out << drank.name << " ";
+    out << drank.base_price << " ";
+    switch(drank.style){
+        case NEAT:
+            out << "NEAT" << std::endl;
+            break;
+        case ROCKS:
+            out << "ROCKS" << std::endl;
+            break;
+        case DOUBLE:
+            out << "DOUBLE" << std::endl;
+            break;
+        case TALL:
+            out << "TALL" << std::endl;
+            break;
+    }
+    return out;
 }
 
-istream& operator>>(istream& in, const Drink drank){
-
+//TODO: If this doesn't compile properly then might have to make a style var and set it to that
+istream& operator>>(istream& in, Drink &drank){
+    string styleString;
+    in >> drank.name;
+    in >> drank.base_price;
+    in >> styleString;
+    if(styleString == "NEAT"){
+        drank.style = NEAT;
+    }
+    else if(styleString == "ROCKS"){
+        drank.style = ROCKS;
+    }
+    else if(styleString == "DOUBLE"){
+        drank.style = DOUBLE;
+    }
+    else{ // Must be Tall assuming there will be no bad input we have to deal with
+        drank.style = TALL;
+    }
+    return in;
 }
 

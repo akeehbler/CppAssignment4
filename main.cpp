@@ -1,15 +1,16 @@
 #include <iostream>
+#include <fstream>
 #include "Customer.h"
 #include "Drink.h"
 
 using namespace std;
 
-enum MAIN_MENU { ORDER=1, PAY=2, EXIT=3 };
-enum DRINK_MENU { WHOLE=1, TWO=2, HEAVY=3, MILKSHAKE=4, MALT=5, SKIM=6, RETURN=7 };
+enum MAIN_MENU { ORDER=1, PAY=2, SAVE=3, LOAD=4, EXIT=5 };
 
 void PrintMain();
 void PrintDrinks(Drink menu[], int count);
 void PrintStyles();
+void PromptCustomerName(Customer &custy);
 
 int main() {
     int input = 0;
@@ -17,6 +18,18 @@ int main() {
     int style_choice = 0;
     float tip;
     Customer customer = Customer();
+
+    //File Stream for menu
+    ifstream input_file;
+    ofstream output_file;
+
+    //Menu.txt fields
+    int num_menu_drinks = 0;
+    string drink_name;
+    float drink_price;
+    STYLE drink_style;
+
+    /*
     Drink menu[6];
     menu[0] = Drink("Whole Milk", 2.50);
     menu[1] = Drink("2% Milk", 2.00);
@@ -24,11 +37,32 @@ int main() {
     menu[3] = Drink("Milkshake", 5.00);
     menu[4] = Drink("Malt", 6.00);
     menu[5] = Drink("Skim Milk", 1.00);
+    */
+
+    //Prompt for the customer name
+    PromptCustomerName(customer);
+
+    // Get the menu Drinks
+    input_file.open("menu.txt");
+    input_file >> num_menu_drinks;
+    //TODO: do I need to eat newline here?
+    //Create Menu
+    Drink menu[num_menu_drinks];
+    for(int i = 0; i < num_menu_drinks; i++){
+        input_file >> drink_name;
+        input_file >> drink_price;
+        input_file >> drink_style;
+        menu[i] = Drink(drink_name, drink_price, drink_style);
+    }
+    input_file.close();
+
+
     Drink next_drink;
+    
     do {
         PrintMain();
         cin >> input;
-        while (!cin || input < 1 || input > 3) {
+        while (!cin || input < 1 || input > 5) {
             if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
             cout << "Please enter a valid menu item: ";
             cin >> input;
@@ -81,6 +115,22 @@ int main() {
             }
             customer.Print(tip); // divide tip by 100 to go from percent to proportion
             customer = Customer(); // reset after paying tab.
+            PromptCustomerName(customer);
+            break;
+        case SAVE:
+            //TODO: can I do this?
+            string output_file_name = customer.getName() + ".txt";
+            output_file.open(output_file_name);
+            //TODO: Does this automattically use the overwritten << operator?
+            output_file << customer;
+            output_file.close();
+            PromptCustomerName(customer);
+            break;
+        case LOAD:
+            string input_file_name = customer.getName() + ".txt";
+            input_file.open(input_file_name);
+            input_file >> customer;
+            input_file.close();
             break;
         case EXIT:
             break;
@@ -91,21 +141,24 @@ int main() {
 }
 
 void PrintMain() {
-    cout << "[" << ORDER << "] Order a Drink" << endl
-         << "[" << PAY   << "] Pay Your Tab"  << endl
-         << "[" << EXIT  << "] Exit"          << endl
+    cout << "Welcome to the Downtown Dairy Bar!"    << endl
+         << "[" << ORDER << "] Order a Drink"       << endl
+         << "[" << PAY   << "] Pay Your Tab"        << endl
+         << "[" << SAVE  << "] Save Tab for Later"  << endl
+         << "[" << LOAD  << "] Load Previous Tab"   << endl
+         << "[" << EXIT  << "] Exit program"        << endl
          << "Please enter a menu item: ";
 }
 
+// Changed this to be dynamic based on the input from menu.txt
 void PrintDrinks(Drink menu[], int count) {
-    cout << "[" << WHOLE     << "] Whole Milk"          << endl
-         << "[" << TWO       << "] 2% Milk"             << endl
-         << "[" << HEAVY     << "] Heavy Cream"         << endl
-         << "[" << MILKSHAKE << "] Milkshake"           << endl
-         << "[" << MALT      << "] Malt"                << endl
-         << "[" << SKIM      << "] Skim Milk"           << endl
-         << "[" << count+1   << "] Return to main menu" << endl
-         << "Please enter a menu item: ";
+    cout << "Which Drink Would you Like to Order?"        << endl;
+    for(int i = 0; i < count; i++){
+        cout << "[" << (i+1) << "] ";
+        cout << menu[i].name << endl;
+    }
+    cout << "[" << (count + 1) << "] Return to main menu" << endl;
+    cout << "Please enter a menu item: "                  << endl;
 }
 
 void PrintStyles() {
@@ -114,4 +167,23 @@ void PrintStyles() {
          << "[" << DOUBLE << "] Double"       << endl
          << "[" << TALL   << "] Tall"         << endl
          << "Please enter a menu item: ";
+}
+
+void PromptCustomerName(Customer &custy){
+    bool exit = false;
+    string customer_name;
+    do{
+        cout << "Please enter your name: ";
+        //TODO: do I need to handle cases where the customer inputs spaces in their name?
+        // Also can cin put into a string?
+        cin >> customer_name;
+        //TODO: Might need newLines here
+        if(!cin){
+            cin.clear();
+            cin.ignore(100, '\n');
+            continue;
+        }
+        custy = new Customer(customer_name);
+        exit = true;
+    }while(!exit);
 }

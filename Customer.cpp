@@ -1,9 +1,11 @@
-#include <iostream>
-#include <iomanip>
 #include "Customer.h"
-#include "Drink.h"
 
 using namespace std;
+
+Customer::Customer(string _name){
+    drink_count = 0;
+    name = _name;
+}
 
 void Customer::Serve(Drink& drink, const STYLE serving_style)
 {
@@ -43,4 +45,37 @@ bool Customer::ReachedLimit() {
     return drink_count >= DRINK_LIMIT;
 }
 
+string Customer::GetName() const{
+    return name;
+}
+
+//TODO do these operators take in a whole line at a time or just until a space
+ostream& operator<<(ostream& out, const Customer custy){
+    out << custy.getName() << " ";
+    out << custy.drink_count;
+    //might need this to be std::endl;
+    out << endl;
+    for(int i = 0; i < custy.drink_count; i++){
+        out << drinks[i];
+    }
+    return out;
+}
+
+// TODO: not sure if this is the right way to set the name field for the customer
+// Does this make a new customer i.e no drinks yet or can there be drinks then make it
+// What if the drink count is over the limit, what to do?
+istream& operator>>(istream& in, Customer &custy){
+    in >> custy.name;
+    in >> custy.drink_count;
+    //TODO: how to deal with newLines here? since the next stuff is on a newline will the operator
+    //know to go to the next line or do i have to "eat" the newline character
+    //TODO: int i starting at 0 is assuming that this is a new customer, otherwise it will start
+    //at drink count 
+    for(int i = 0; i < custy.drink_count; i++){
+        Drink newDrink = Drink();
+        in >> newDrink;
+        drinks[i] = newDrink;
+    }
+    return in;
+}
 

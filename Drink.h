@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <iomanip>
 // if you need any additional includes, add them here.
 
 #ifndef DRINK_HEADER
@@ -22,7 +23,7 @@ struct Drink {
     void Print();
     // data and functions should be added here
     friend ostream& operator<<(ostream& out, const Drink drank);
-    friend istream& operator>>(istream& in, const Drink drank);
+    friend istream& operator>>(istream& in, Drink &drank);
     // you can add a private section for data if desired.
 };
 #endif
