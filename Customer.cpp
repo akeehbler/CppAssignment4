@@ -63,7 +63,7 @@ istream& operator>>(istream& in, Customer &custy){
     in >> custy.name;
     in >> custy.drink_count; 
     for(int i = 0; i < custy.drink_count; i++){
-        if( i + 1 > custy.DRINK_LIMIT){
+        if( i + 1 >= DRINK_LIMIT){
             break;
         }
         Drink newDrink = Drink();
