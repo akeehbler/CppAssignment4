@@ -47,9 +47,9 @@ int main() {
     input_file >> num_menu_drinks;
     //TODO: do I need to eat newline here?
     //Create Menu
-    Drink menu[num_menu_drinks];
+    Drink *menu = new Drink[num_menu_drinks];
     for(int i = 0; i < num_menu_drinks; i++){
-        Drink add_drink = new Drink();
+        Drink *add_drink = new Drink();
         input_file >> add_drink;
         menu[i] = add_drink;
     }
@@ -73,7 +73,7 @@ int main() {
                 cout << "You've reached your limit!" << endl;
             }
             else {
-                PrintDrinks(menu, 6);
+                PrintDrinks(menu, num_menu_drinks);
                 cin >> drink_choice;
                 while (!cin || drink_choice < 1 || drink_choice > 6) {
                     if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
@@ -135,7 +135,7 @@ int main() {
             break;
         }
     } while (input != EXIT);
-
+    delete [] menu;
     return 0;
 }
 
