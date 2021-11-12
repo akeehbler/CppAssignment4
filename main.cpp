@@ -49,10 +49,9 @@ int main() {
     //Create Menu
     Drink menu[num_menu_drinks];
     for(int i = 0; i < num_menu_drinks; i++){
-        input_file >> drink_name;
-        input_file >> drink_price;
-        input_file >> drink_style;
-        menu[i] = Drink(drink_name, drink_price, drink_style);
+        Drink add_drink = new Drink();
+        input_file >> add_drink;
+        menu[i] = add_drink;
     }
     input_file.close();
 
