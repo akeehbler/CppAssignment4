@@ -56,7 +56,7 @@ ostream& operator<<(ostream& out, const Customer custy){
     //might need this to be std::endl;
     out << endl;
     for(int i = 0; i < custy.drink_count; i++){
-        out << drinks[i];
+        out << custy.drinks[i];
     }
     return out;
 }
@@ -74,7 +74,7 @@ istream& operator>>(istream& in, Customer &custy){
     for(int i = 0; i < custy.drink_count; i++){
         Drink newDrink = Drink();
         in >> newDrink;
-        drinks[i] = newDrink;
+        custy.drinks[i] = newDrink;
     }
     return in;
 }
