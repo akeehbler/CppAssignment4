@@ -68,71 +68,80 @@ int main() {
         }
         // now we have good input, handle the cases:
         switch (input) {
-        case ORDER:
-            if (customer.ReachedLimit()) {
-                cout << "You've reached your limit!" << endl;
-            }
-            else {
-                PrintDrinks(menu, num_menu_drinks);
-                cin >> drink_choice;
-                while (!cin || drink_choice < 1 || drink_choice > 6) {
-                    if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
-                    cout << "Please enter a valid menu item: ";
+            case ORDER:{
+                if (customer.ReachedLimit()) {
+                    cout << "You've reached your limit!" << endl;
+                }
+                else {
+                    PrintDrinks(menu, num_menu_drinks);
                     cin >> drink_choice;
-                }
-                PrintStyles();
-                cin >> style_choice;
-                while (!cin || style_choice < 1 || style_choice > 4) {
-                    if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
-                    cout << "Please enter a valid menu item: ";
+                    while (!cin || drink_choice < 1 || drink_choice > 6) {
+                        if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
+                        cout << "Please enter a valid menu item: ";
+                        cin >> drink_choice;
+                    }
+                    PrintStyles();
                     cin >> style_choice;
+                    while (!cin || style_choice < 1 || style_choice > 4) {
+                        if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
+                        cout << "Please enter a valid menu item: ";
+                        cin >> style_choice;
+                    }
+                    next_drink = Drink(menu[drink_choice-1]); // copy a drink from the menu.
+                    switch(style_choice) {
+                        case NEAT:{
+                            customer.Serve(next_drink, NEAT);
+                            break;
+                        }
+                        case ROCKS:{
+                            customer.Serve(next_drink, ROCKS);
+                            break;
+                        }
+                        case DOUBLE:{
+                            customer.Serve(next_drink, DOUBLE);
+                            break;
+                        }
+                        case TALL:{
+                            customer.Serve(next_drink, TALL);
+                            break;
+                        }
+                    }
                 }
-                next_drink = Drink(menu[drink_choice-1]); // copy a drink from the menu.
-                switch(style_choice) {
-                case NEAT:
-                    customer.Serve(next_drink, NEAT);
-                    break;
-                case ROCKS:
-                    customer.Serve(next_drink, ROCKS);
-                    break;
-                case DOUBLE:
-                    customer.Serve(next_drink, DOUBLE);
-                    break;
-                case TALL:
-                    customer.Serve(next_drink, TALL);
-                    break;
-                }
+                break;
             }
-            break;
-        case PAY:
-            cout << "Please enter your tip percent (%): ";
-            cin >> tip;
-            while (!cin || tip < 0.0) {
-                if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
-                cout << "Please enter a valid tip percent (%): ";
+            case PAY:{
+                cout << "Please enter your tip percent (%): ";
                 cin >> tip;
+                while (!cin || tip < 0.0) {
+                    if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
+                    cout << "Please enter a valid tip percent (%): ";
+                    cin >> tip;
+                }
+                customer.Print(tip); // divide tip by 100 to go from percent to proportion
+                customer = Customer(); // reset after paying tab.
+                PromptCustomerName(customer);
+                break;
             }
-            customer.Print(tip); // divide tip by 100 to go from percent to proportion
-            customer = Customer(); // reset after paying tab.
-            PromptCustomerName(customer);
-            break;
-        case SAVE:
-            //TODO: can I do this?
-            string output_file_name = customer.GetName() + ".txt";
-            output_file.open(output_file_name);
-            //TODO: Does this automattically use the overwritten << operator?
-            output_file << customer;
-            output_file.close();
-            PromptCustomerName(customer);
-            break;
-        case LOAD:
-            string input_file_name = customer.GetName() + ".txt";
-            input_file.open(input_file_name);
-            input_file >> customer;
-            input_file.close();
-            break;
-        case EXIT:
-            break;
+            case SAVE:{
+                //TODO: can I do this?
+                string output_file_name = customer.GetName() + ".txt";
+                output_file.open(output_file_name);
+                //TODO: Does this automattically use the overwritten << operator?
+                output_file << customer;
+                output_file.close();
+                PromptCustomerName(customer);
+                break;
+            }
+            case LOAD:{
+                string input_file_name = customer.GetName() + ".txt";
+                input_file.open(input_file_name);
+                input_file >> customer;
+                input_file.close();
+                break;
+            }
+            case EXIT:{
+                break;
+            }
         }
     } while (input != EXIT);
     delete [] menu;

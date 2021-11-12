@@ -51,7 +51,7 @@ string Customer::GetName() const{
 
 //TODO do these operators take in a whole line at a time or just until a space
 ostream& operator<<(ostream& out, const Customer custy){
-    out << custy.getName() << " ";
+    out << custy.GetName() << " ";
     out << custy.drink_count;
     //might need this to be std::endl;
     out << endl;
