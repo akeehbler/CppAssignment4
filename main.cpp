@@ -191,7 +191,7 @@ void PromptCustomerName(Customer &custy){
             cin.ignore(100, '\n');
             continue;
         }
-        custy = new Customer(customer_name);
+        custy = Customer(customer_name);
         exit = true;
     }while(!exit);
 }
