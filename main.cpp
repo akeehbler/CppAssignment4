@@ -118,7 +118,7 @@ int main() {
             break;
         case SAVE:
             //TODO: can I do this?
-            string output_file_name = customer.getName() + ".txt";
+            string output_file_name = customer.GetName() + ".txt";
             output_file.open(output_file_name);
             //TODO: Does this automattically use the overwritten << operator?
             output_file << customer;
@@ -126,7 +126,7 @@ int main() {
             PromptCustomerName(customer);
             break;
         case LOAD:
-            string input_file_name = customer.getName() + ".txt";
+            string input_file_name = customer.GetName() + ".txt";
             input_file.open(input_file_name);
             input_file >> customer;
             input_file.close();
