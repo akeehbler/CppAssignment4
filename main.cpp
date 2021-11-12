@@ -29,23 +29,12 @@ int main() {
     float drink_price;
     STYLE drink_style;
 
-    /*
-    Drink menu[6];
-    menu[0] = Drink("Whole Milk", 2.50);
-    menu[1] = Drink("2% Milk", 2.00);
-    menu[2] = Drink("Heavy Cream", 3.50);
-    menu[3] = Drink("Milkshake", 5.00);
-    menu[4] = Drink("Malt", 6.00);
-    menu[5] = Drink("Skim Milk", 1.00);
-    */
-
     //Prompt for the customer name
     PromptCustomerName(customer);
 
     // Get the menu Drinks
     input_file.open("menu.txt");
     input_file >> num_menu_drinks;
-    //TODO: do I need to eat newline here?
     //Create Menu
     Drink *menu = new Drink[num_menu_drinks];
     for(int i = 0; i < num_menu_drinks; i++){
@@ -123,7 +112,6 @@ int main() {
                 break;
             }
             case SAVE:{
-                //TODO: can I do this?
                 string output_file_name = customer.GetName() + ".txt";
                 output_file.open(output_file_name);
                 // Uses overloaded Customer << operator
@@ -182,9 +170,7 @@ void PromptCustomerName(Customer &custy){
     string customer_name;
     do{
         cout << "Please enter your name: ";
-        // TODO: Also can cin put into a string?
         cin >> customer_name;
-        //TODO: Might need newLines here
         if(!cin){
             cin.clear();
             cin.ignore(100, '\n');

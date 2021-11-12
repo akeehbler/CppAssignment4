@@ -49,11 +49,9 @@ string Customer::GetName() const{
     return name;
 }
 
-//TODO do these operators take in a whole line at a time or just until a space
 ostream& operator<<(ostream& out, const Customer custy){
     out << custy.GetName() << " ";
     out << custy.drink_count;
-    //might need this to be std::endl;
     out << endl;
     for(int i = 0; i < custy.drink_count; i++){
         out << custy.drinks[i];
@@ -61,17 +59,13 @@ ostream& operator<<(ostream& out, const Customer custy){
     return out;
 }
 
-// TODO: not sure if this is the right way to set the name field for the customer
-// Does this make a new customer i.e no drinks yet or can there be drinks then make it
-// What if the drink count is over the limit, what to do?
 istream& operator>>(istream& in, Customer &custy){
     in >> custy.name;
-    in >> custy.drink_count;
-    //TODO: how to deal with newLines here? since the next stuff is on a newline will the operator
-    //know to go to the next line or do i have to "eat" the newline character
-    //TODO: int i starting at 0 is assuming that this is a new customer, otherwise it will start
-    //at drink count 
+    in >> custy.drink_count; 
     for(int i = 0; i < custy.drink_count; i++){
+        if( i + 1 > custy.DRINK_LIMIT){
+            break;
+        }
         Drink newDrink = Drink();
         in >> newDrink;
         custy.drinks[i] = newDrink;

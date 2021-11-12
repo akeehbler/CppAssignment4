@@ -56,7 +56,6 @@ void Drink::Print() {
     cout << left << setw(22) <<  name_str << "$" << fixed << setprecision(2) << setw(4) << TotalPrice() << endl;
 }
 
-//TODO might want to use this for the drink, or maybe not
 ostream& operator<<(ostream& out, const Drink drank){
     out << drank.name << " ";
     out << drank.base_price << " ";
@@ -77,7 +76,6 @@ ostream& operator<<(ostream& out, const Drink drank){
     return out;
 }
 
-//TODO: If this doesn't compile properly then might have to make a style var and set it to that
 istream& operator>>(istream& in, Drink &drank){
     string styleString;
     in >> drank.name;
