@@ -75,7 +75,7 @@ int main() {
                 else {
                     PrintDrinks(menu, num_menu_drinks);
                     cin >> drink_choice;
-                    while (!cin || drink_choice < 1 || drink_choice > 6) {
+                    while (!cin || drink_choice < 1 || drink_choice > num_menu_drinks + 1) {
                         if (!cin) { cin.clear(); cin.ignore(100, '\n'); }
                         cout << "Please enter a valid menu item: ";
                         cin >> drink_choice;
@@ -126,7 +126,7 @@ int main() {
                 //TODO: can I do this?
                 string output_file_name = customer.GetName() + ".txt";
                 output_file.open(output_file_name);
-                //TODO: Does this automattically use the overwritten << operator?
+                // Uses overloaded Customer << operator
                 output_file << customer;
                 output_file.close();
                 PromptCustomerName(customer);
@@ -182,8 +182,7 @@ void PromptCustomerName(Customer &custy){
     string customer_name;
     do{
         cout << "Please enter your name: ";
-        //TODO: do I need to handle cases where the customer inputs spaces in their name?
-        // Also can cin put into a string?
+        // TODO: Also can cin put into a string?
         cin >> customer_name;
         //TODO: Might need newLines here
         if(!cin){
