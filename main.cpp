@@ -49,7 +49,7 @@ int main() {
     //Create Menu
     Drink *menu = new Drink[num_menu_drinks];
     for(int i = 0; i < num_menu_drinks; i++){
-        Drink *add_drink = new Drink();
+        Drink add_drink = Drink();
         input_file >> add_drink;
         menu[i] = add_drink;
     }
