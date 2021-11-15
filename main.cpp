@@ -1,3 +1,4 @@
+// Alec Keehbler akeehbler
 #include <iostream>
 #include <fstream>
 #include "Customer.h"
@@ -123,6 +124,7 @@ int main() {
             case LOAD:{
                 string input_file_name = customer.GetName() + ".txt";
                 input_file.open(input_file_name);
+                customer = Customer();
                 input_file >> customer;
                 input_file.close();
                 break;
